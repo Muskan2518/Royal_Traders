@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function AdminLoginPage() {
@@ -93,7 +94,14 @@ function LoginShell({ children }: { children?: React.ReactNode }) {
     <div className="min-h-screen bg-gradient-to-br from-white via-brand-50/40 to-brand-50/30 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-ink-200 p-8">
         <div className="flex items-center gap-3 mb-6">
-          <div className="h-10 w-10 rounded-xl bg-brand-700 text-white flex items-center justify-center font-bold">RT</div>
+          <Image
+            src="/images/logo.png"
+            alt="Royal Traders"
+            width={48}
+            height={48}
+            className="h-12 w-12 rounded-xl object-contain bg-white ring-1 ring-ink-100"
+            priority
+          />
           <div>
             <h1 className="text-lg font-bold text-ink-900">Royal Traders</h1>
             <p className="text-xs text-ink-500">Admin sign in</p>

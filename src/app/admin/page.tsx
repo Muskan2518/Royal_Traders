@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 type Row = {
@@ -184,7 +185,14 @@ export default function AdminDashboardPage() {
       <header className="sticky top-0 z-20 bg-white/85 backdrop-blur border-b border-brand-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
           <div className="flex items-center gap-2 pr-3 border-r border-brand-100">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-brand-600 via-brand-700 to-brand-900 text-white text-xs font-bold flex items-center justify-center shadow-md shadow-brand-600/30">RT</div>
+            <Image
+              src="/images/logo.png"
+              alt="Royal Traders"
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-xl object-contain bg-white ring-1 ring-brand-100 shadow-sm"
+              priority
+            />
             <div className="hidden sm:block leading-tight">
               <div className="text-sm font-bold text-ink-900">Royal Traders</div>
               <div className="text-[10px] text-ink-500 -mt-0.5">Admin Console</div>
