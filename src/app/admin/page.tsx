@@ -14,7 +14,7 @@ type Row = {
 };
 
 type Bucket = "metal" | "furniture" | "ac" | "generator" | "office" | "restaurant" | "other";
-type Period = "week" | "month" | "all";
+type Period = "today" | "week" | "month" | "all";
 
 const BUCKET_LABEL: Record<Bucket, string> = {
   metal: "Scrap Metal",
@@ -63,6 +63,10 @@ function isWithin(ts: string, period: Period): boolean {
   if (period === "all") return true;
   const d = new Date(ts);
   if (isNaN(d.getTime())) return false;
+  if (period === "today") {
+    const now = new Date();
+    return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+  }
   const now = Date.now();
   const ms = period === "week" ? 7 * 86400_000 : 30 * 86400_000;
   return now - d.getTime() <= ms;
@@ -79,6 +83,7 @@ export default function AdminDashboardPage() {
   const [bucket, setBucket] = useState<Bucket | "all">("all");
   const [period, setPeriod] = useState<Period>("week");
   const [page, setPage] = useState(1);
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -97,6 +102,7 @@ export default function AdminDashboardPage() {
     return () => { cancelled = true; };
   }, []);
 
+  const today = useMemo(() => rows.filter((r) => isWithin(r.timestamp, "today")), [rows]);
   const weekly = useMemo(() => rows.filter((r) => isWithin(r.timestamp, "week")), [rows]);
   const monthly = useMemo(() => rows.filter((r) => isWithin(r.timestamp, "month")), [rows]);
 
@@ -166,8 +172,8 @@ export default function AdminDashboardPage() {
     router.refresh();
   }
 
-  const periodLabel = period === "week" ? "This Week" : period === "month" ? "This Month" : "All Time";
-  const periodNoun = period === "week" ? "weekly" : period === "month" ? "monthly" : "all-time";
+  const periodLabel = period === "today" ? "Today" : period === "week" ? "This Week" : period === "month" ? "This Month" : "All Time";
+  const periodNoun = period === "today" ? "today's" : period === "week" ? "weekly" : period === "month" ? "monthly" : "all-time";
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-white via-brand-50/40 to-brand-50/30 text-ink-900 overflow-hidden">
@@ -199,7 +205,7 @@ export default function AdminDashboardPage() {
               Admin
             </span>
             <button
-              onClick={logout}
+              onClick={() => setConfirmLogout(true)}
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-700 hover:bg-brand-800 text-white text-sm font-semibold px-3 py-1.5 shadow-sm transition"
             >
               <SignOutIcon className="h-4 w-4" />
@@ -224,6 +230,7 @@ export default function AdminDashboardPage() {
             <p className="text-sm text-ink-600 mt-2 max-w-xl">Review and allocate incoming scrap collection requests across Hyderabad.</p>
           </div>
           <div className="flex gap-3">
+            <StatCard label="TODAY" value={today.length} tone="emerald" />
             <StatCard label="WEEKLY VOLUME" value={weekly.length} tone="brand" />
             <StatCard label="MONTHLY TOTAL" value={monthly.length} tone="accent" />
           </div>
@@ -255,6 +262,7 @@ export default function AdminDashboardPage() {
                 onChange={(e) => setPeriod(e.target.value as Period)}
                 className="appearance-none rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium pr-8 cursor-pointer"
               >
+                <option value="today">Today</option>
                 <option value="week">This Week</option>
                 <option value="month">This Month</option>
                 <option value="all">All Time</option>
@@ -285,7 +293,6 @@ export default function AdminDashboardPage() {
                     <th className="px-4 py-3">Scrap Type</th>
                     <th className="px-4 py-3">Message/Notes</th>
                     <th className="px-4 py-3 text-center">Pref.</th>
-                    <th className="px-4 py-3 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -325,11 +332,6 @@ export default function AdminDashboardPage() {
                         <td className="px-4 py-4 align-top text-center text-slate-400">
                           <PrefIcon pref={r.contactPref} />
                         </td>
-                        <td className="px-4 py-4 align-top text-center text-slate-400">
-                          <button className="h-7 w-7 rounded-md hover:bg-slate-100 inline-flex items-center justify-center" title="More">
-                            <DotsIcon className="h-4 w-4" />
-                          </button>
-                        </td>
                       </tr>
                     );
                   })}
@@ -365,15 +367,55 @@ export default function AdminDashboardPage() {
 
         <p className="text-center text-xs text-slate-400 pb-6">{periodLabel} · {filtered.length} request{filtered.length === 1 ? "" : "s"} after filters</p>
       </main>
+
+      {confirmLogout && (
+        <div
+          className="fixed inset-0 z-50 bg-ink-900/50 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setConfirmLogout(false)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-sm rounded-2xl bg-white shadow-2xl border border-ink-100 p-6"
+          >
+            <div className="flex items-start gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-brand-50 text-brand-700">
+                <SignOutIcon className="h-5 w-5" />
+              </span>
+              <div>
+                <h2 className="text-base font-bold text-ink-900">Sign out of admin?</h2>
+                <p className="mt-1 text-sm text-ink-500">You'll need to sign back in to access the dashboard.</p>
+              </div>
+            </div>
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                onClick={() => setConfirmLogout(false)}
+                className="rounded-lg border border-ink-200 bg-white px-4 py-2 text-sm font-medium text-ink-700 hover:bg-ink-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => { setConfirmLogout(false); logout(); }}
+                className="rounded-lg bg-brand-700 hover:bg-brand-800 text-white px-4 py-2 text-sm font-semibold"
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-function StatCard({ label, value, tone = "brand" }: { label: string; value: number; tone?: "brand" | "accent" }) {
+function StatCard({ label, value, tone = "brand" }: { label: string; value: number; tone?: "brand" | "accent" | "emerald" }) {
   const stripe = tone === "accent"
     ? "from-accent-400 to-accent-600"
+    : tone === "emerald"
+    ? "from-emerald-400 to-emerald-600"
     : "from-brand-500 to-brand-700";
-  const valueText = tone === "accent" ? "text-accent-700" : "text-brand-700";
+  const valueText = tone === "accent" ? "text-accent-700" : tone === "emerald" ? "text-emerald-700" : "text-brand-700";
   return (
     <div className="relative overflow-hidden rounded-2xl bg-white border border-brand-100 shadow-md shadow-brand-900/5 px-5 py-3 min-w-[160px]">
       <span className={`absolute left-0 top-0 h-full w-1 bg-gradient-to-b ${stripe}`} />
