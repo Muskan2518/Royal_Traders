@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { serviceAreas } from "@/data/serviceAreas";
+import { append as appendToDb } from "@/lib/pickup-store";
 
 export const runtime = "nodejs";
 
@@ -129,13 +130,20 @@ export async function POST(req: Request) {
     contactPref: String(body.contactPref || "").trim()
   };
 
-  // Best-effort sheet append — don't block email if the sheet is down.
-  let sheetWarning: string | undefined;
+  // Persist to MySQL — this is the source of truth for the admin dashboard.
+  let dbWarning: string | undefined;
+  try {
+    await appendToDb(row);
+  } catch (err) {
+    console.error("[pickup-request] db insert failed", err);
+    dbWarning = "Saved via email; database write failed.";
+  }
+
+  // Best-effort sheet append (optional legacy mirror) — don't block on failure.
   try {
     await appendToSheet(row);
   } catch (err) {
     console.error("[pickup-request] sheet append failed", err);
-    sheetWarning = "Saved via email; sheet write failed.";
   }
 
   try {
@@ -148,5 +156,5 @@ export async function POST(req: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, ...(sheetWarning ? { warning: sheetWarning } : {}) });
+  return NextResponse.json({ ok: true, ...(dbWarning ? { warning: dbWarning } : {}) });
 }

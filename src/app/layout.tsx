@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { Cinzel } from "next/font/google";
-import Header from "@/components/Header";
+import SiteChrome from "@/components/SiteChrome";
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -9,8 +9,6 @@ const cinzel = Cinzel({
   variable: "--font-cinzel",
   display: "swap"
 });
-import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { SITE } from "@/lib/constants";
 import { localBusinessJsonLd } from "@/lib/seo";
 
@@ -40,10 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={cinzel.variable}>
       <body>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <SiteChrome>{children}</SiteChrome>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd()) }}

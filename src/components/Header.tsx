@@ -13,9 +13,9 @@ const NAV = [
   { href: "/scrap", label: "Scrap" },
   { href: "/scrap-buyers-hyderabad", label: "Dismantling Works" },
   { href: "/old-furniture-buyers-hyderabad", label: "Furniture" },
-  { href: "/office-furniture-buyers-hyderabad", label: "Office" },
-  { href: "/ac-buyers-hyderabad", label: "AC" },
-  { href: "/generator-buyers-hyderabad", label: "Generator" },
+  { href: "/office-furniture-buyers-hyderabad", label: "Office Furniture" },
+  { href: "/restaurant-furniture-buyers", label: "Restaurant" },
+  { href: "/ac-generator-buyers-hyderabad", label: "AC & Generators" },
   { href: "/areas", label: "Areas" },
   { href: "/contact", label: "Contact" }
 ];
@@ -83,7 +83,7 @@ export default function Header() {
             </button>
             <Link
               href="/"
-              className="hidden sm:flex items-baseline gap-1.5 font-[family-name:var(--font-cinzel)] leading-none tracking-[0.08em] whitespace-nowrap"
+              className="hidden sm:flex flex-col items-start gap-0.5 font-[family-name:var(--font-cinzel)] leading-none tracking-[0.08em] whitespace-nowrap"
               aria-label={`${SITE.name} — Home`}
             >
               <span className="text-base md:text-lg font-black text-[#0f1c36]">ROYAL</span>

@@ -3,64 +3,28 @@
 import { useState } from "react";
 import Image from "next/image";
 
-interface ImageItem {
-  num: number;
-  file: string;
-}
+const IMAGES = ["fun10", "fun9", "fun12"];
 
-const IMAGES: ImageItem[] = [
-  { num: 1, file: "f" },
-  { num: 2, file: "f" },
-  { num: 3, file: "f" },
-  { num: 4, file: "f" },
-  { num: 5, file: "f" },
-  { num: 6, file: "f" },
-  { num: 7, file: "f" },
-  { num: 8, file: "f" },
-  { num: 9, file: "f" },
-  { num: 10, file: "f" },
-  { num: 11, file: "f" },
-  { num: 12, file: "f" },
-  { num: 13, file: "f" },
-  { num: 14, file: "f" },
-  { num: 15, file: "f" },
-  { num: 16, file: "f" },
-  { num: 17, file: "f" },
-  { num: 18, file: "f" },
-  { num: 19, file: "f" },
-  { num: 1, file: "fun" },
-  { num: 2, file: "fun" },
-  { num: 3, file: "fun" },
-  { num: 4, file: "fun" },
-  { num: 5, file: "fun" },
-  { num: 6, file: "fun" },
-  { num: 7, file: "fun" },
-  { num: 8, file: "fun" },
-  { num: 11, file: "fun" },
-  { num: 15, file: "fun" },
-  { num: 15, file: "of" }
-];
-
-export default function FurnitureGallery() {
-  const [selected, setSelected] = useState<ImageItem | null>(null);
+export default function RestaurantGallery() {
+  const [selected, setSelected] = useState<string | null>(null);
 
   return (
     <>
       <section className="section">
         <div className="container grid gap-6 md:grid-cols-2 lg:grid-cols-4 px-4">
-          {IMAGES.map((item) => (
+          {IMAGES.map((name) => (
             <div
-              key={`${item.file}${item.num}`}
-              onClick={() => setSelected(item)}
+              key={name}
+              onClick={() => setSelected(name)}
               className="overflow-hidden rounded-2xl shadow-md aspect-square border-4 border-brand-700 cursor-pointer hover:shadow-lg transition-shadow"
             >
               <Image
-                src={`/images/${item.file}${item.num}.jpg`}
-                alt={`Furniture buyers in Hyderabad - ${item.file}${item.num}`}
+                src={`/images/${name}.jpg`}
+                alt={`Restaurant furniture buyers in Hyderabad - ${name}`}
                 width={400}
                 height={400}
                 className="w-full h-full object-cover"
-                priority={item.file === "f" && item.num === 1}
+                priority={name === "fun10"}
               />
             </div>
           ))}
@@ -77,8 +41,8 @@ export default function FurnitureGallery() {
             onClick={(e) => e.stopPropagation()}
           >
             <Image
-              src={`/images/${selected.file}${selected.num}.jpg`}
-              alt={`Furniture buyers in Hyderabad - ${selected.file}${selected.num}`}
+              src={`/images/${selected}.jpg`}
+              alt={`Restaurant furniture buyers in Hyderabad - ${selected}`}
               width={1000}
               height={700}
               className="w-auto h-auto max-w-4xl max-h-[80vh]"

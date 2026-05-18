@@ -1,12 +1,12 @@
 import Image from "next/image";
-import SGallery from "@/components/SGallery";
+import AcGeneratorGallery from "@/components/AcGeneratorGallery";
 import { SITE, telLink, whatsappLink } from "@/lib/constants";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
-  title: `Scrap Buyers in ${SITE.city} — ${SITE.name}`,
-  description: `Browse our scrap collection gallery. Free pickup and on-the-spot cash payment across ${SITE.city}.`,
-  path: "/scrap"
+  title: `AC & Generator Buyers in ${SITE.city} — ${SITE.name}`,
+  description: `Buyers of all types of ACs and generators in ${SITE.city}. Free pickup, on-the-spot cash payment.`,
+  path: "/ac-generator-buyers-hyderabad"
 });
 
 export default function Page() {
@@ -16,15 +16,17 @@ export default function Page() {
         <div className="container grid items-center gap-4 lg:gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
           <div className="min-w-0">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#fdf8ec] px-4 py-1.5 text-sm font-semibold text-[#0f1c36] ring-1 ring-[#ecc257] animate-fade-up animate-float">
-              <RecycleChip /> Scrap
+              <BoltChip /> AC & Generators
             </span>
 
-            <h1 className="mt-5 text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-[1.15] text-[#070f22] animate-fade-up animate-fade-up-1">
-              We purchase all types of scrap materials across {SITE.city}
+            <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05] text-[#070f22] animate-fade-up animate-fade-up-1">
+              AC & Generator
+              <br />
+              Buyers in {SITE.city}
             </h1>
 
             <p className="mt-5 text-base md:text-lg text-[#475569] max-w-xl animate-fade-up animate-fade-up-2">
-              A look at the kind of scrap we collect every day. Free pickup, transparent weighing, and instant payment.
+              Window, Split, VRV, Chillers, and all types of generators — bought at best market prices. Free pickup and instant cash payment.
             </p>
 
             <div className="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
@@ -42,7 +44,7 @@ export default function Page() {
                 <PhoneIcon /> Call Now
               </a>
               <a
-                href={whatsappLink("Hi, I want to sell scrap.")}
+                href={whatsappLink("Hi, I want to sell my AC / generator.")}
                 className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-[#0f1c36] ring-2 ring-[#0f1c36]/30 hover:bg-[#fdf8ec]/40 hover:-translate-y-0.5 transition"
               >
                 <WhatsAppIcon /> WhatsApp Us
@@ -63,53 +65,62 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="relative w-full max-w-2xl mx-auto">
-            <div className="relative aspect-[5/4] rounded-3xl overflow-hidden bg-[#faedc8] shadow-xl">
-              <Image
-                src="/images/s2.jpg"
-                alt="Scrap collection"
-                fill
-                sizes="(max-width: 1024px) 100vw, 600px"
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#0f1c36]/40 via-transparent to-transparent" />
-              <div className="absolute top-4 left-4 md:top-5 md:left-5 max-w-[60%] z-10">
-                <p className="font-serif italic text-white text-lg md:text-xl lg:text-2xl leading-[1.05] drop-shadow-lg">
-                  We collect it,
-                  <br />
-                  You get paid!
-                </p>
-                <svg
-                  className="mt-1 h-2.5 w-28 md:w-36 text-[#ecc257]"
-                  viewBox="0 0 200 12"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  preserveAspectRatio="none"
-                  aria-hidden
-                >
-                  <path d="M2 8 Q50 1, 100 6 T 198 4" />
-                </svg>
-              </div>
-            </div>
-
-            <div className="absolute -bottom-3 right-3 inline-flex items-center gap-2 rounded-2xl bg-[#0f1c36] px-4 py-2 text-white shadow-lg animate-float">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-[#0f1c36]">
-                <CashIcon />
-              </span>
-              <span className="leading-tight font-bold text-sm">
-                Instant Cash
-                <br />
-                <span className="text-[11px] font-medium opacity-90">on the Spot</span>
-              </span>
-            </div>
-          </div>
+          <AcGeneratorHeroVisual />
         </div>
       </section>
-      <SGallery />
+
+      <AcGeneratorGallery />
     </>
+  );
+}
+
+function AcGeneratorHeroVisual() {
+  return (
+    <div className="relative w-full max-w-2xl mx-auto">
+      <div className="relative aspect-[5/4]">
+        <div className="absolute inset-0 rounded-3xl bg-[#faedc8] shadow-xl" aria-hidden />
+
+        <div className="absolute left-3 top-3 right-[28%] bottom-[22%] rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white rotate-[-3deg] transition-transform duration-500 hover:rotate-0 hover:scale-[1.02]">
+          <Image
+            src="/images/ac8.jpg"
+            alt="AC buyers in Hyderabad — outdoor unit pickup"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 35vw"
+            className="object-cover"
+          />
+          <div className="absolute top-2 left-2 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-[#0f1c36] shadow">
+            <SnowIcon /> AC Units
+          </div>
+        </div>
+
+        <div className="absolute right-3 bottom-3 w-[58%] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white rotate-[4deg] transition-transform duration-500 hover:rotate-0 hover:scale-[1.02]">
+          <Image
+            src="/images/gen2.jpg"
+            alt="Generator buyers in Hyderabad — KOEL Green diesel generator"
+            fill
+            priority
+            sizes="(max-width: 1024px) 100vw, 30vw"
+            className="object-cover"
+          />
+          <div className="absolute top-2 left-2 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-[#0f1c36] shadow">
+            <BoltIcon /> Generators
+          </div>
+        </div>
+
+      </div>
+
+      <div className="absolute -bottom-3 right-3 inline-flex items-center gap-2 rounded-2xl bg-[#0f1c36] px-4 py-2 text-white shadow-lg animate-float">
+        <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-[#0f1c36]">
+          <CashIcon />
+        </span>
+        <span className="leading-tight font-bold text-sm">
+          Instant Cash
+          <br />
+          <span className="text-[11px] font-medium opacity-90">on the Spot</span>
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -132,13 +143,24 @@ function Feature({
   );
 }
 
-function RecycleChip() {
+function BoltChip() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M7 19l-3-3 3-3" />
-      <path d="M4 16h11a4 4 0 0 0 0-8h-1" />
-      <path d="M17 5l3 3-3 3" />
-      <path d="M20 8H9a4 4 0 0 0 0 8h1" />
+      <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
+    </svg>
+  );
+}
+function SnowIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19" />
+    </svg>
+  );
+}
+function BoltIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />
     </svg>
   );
 }

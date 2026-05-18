@@ -108,7 +108,7 @@ export default function TrustStrip() {
                 key={i.v}
                 className={`group relative h-full reveal-from-left delay-${idx + 1} ${active ? "is-visible" : ""}`}
               >
-                <div className={`relative h-full overflow-hidden rounded-2xl bg-gradient-to-br ${tone.cardBg} ring-1 ${tone.ring} pl-5 pr-4 pt-5 pb-5 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl`}>
+                <div className={`relative h-full overflow-hidden rounded-2xl bg-gradient-to-br ${tone.cardBg} ring-1 ${tone.ring} pl-3 pr-3 pt-4 pb-4 md:pl-5 md:pr-4 md:pt-5 md:pb-5 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl`}>
                   {/* Left ribbon */}
                   <span className={`pointer-events-none absolute inset-y-0 left-0 w-1 ${tone.bar}`} />
                   {/* Top corner gradient blob */}
@@ -121,14 +121,14 @@ export default function TrustStrip() {
 
                   <div className="relative flex items-start gap-3">
                     {/* Icon */}
-                    <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${tone.iconBg} text-white shadow-md ring-4 ring-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-6deg]`}>
+                    <span className={`grid h-10 w-10 md:h-12 md:w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${tone.iconBg} text-white shadow-md ring-2 md:ring-4 ring-white transition-transform duration-300 group-hover:scale-110 group-hover:rotate-[-6deg]`}>
                       {i.icon}
                     </span>
                     <div className="min-w-0">
                       <div className={`text-[10px] font-bold uppercase tracking-wider ${i.accent === "gold" ? "text-accent-700" : "text-brand-700"} mb-0.5`}>
                         {i.v}
                       </div>
-                      <div className={`text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r ${tone.text} bg-clip-text text-transparent !leading-[1.15] whitespace-nowrap`}>
+                      <div className={`text-xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r ${tone.text} bg-clip-text text-transparent !leading-[1.15] break-words`}>
                         {i.end !== undefined ? (
                           <CountUp end={i.end} suffix={i.suffix} prefix={i.prefix} active={active} delayMs={idx * 150} />
                         ) : (

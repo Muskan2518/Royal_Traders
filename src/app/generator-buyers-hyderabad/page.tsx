@@ -29,7 +29,7 @@ export default function Page() {
             </span>
 
             <h1 className="mt-3 text-2xl md:text-3xl lg:text-[2rem] xl:text-[2.25rem] font-extrabold tracking-tight leading-[1.05] text-[#070f22] animate-fade-up animate-fade-up-1">
-              Generator Buyers{" "}
+              Buyers of All Types of Used Generators{" "}
               <span className="font-serif italic relative text-[#070f22]">
                 in {SITE.city}
                 <svg

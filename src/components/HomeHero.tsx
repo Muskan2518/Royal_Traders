@@ -22,9 +22,9 @@ export default function HomeHero() {
       <DotsPattern className="absolute bottom-10 right-6 hidden md:block opacity-40" />
       <WaveDecoration className="absolute -bottom-2 -left-2 w-44 h-44 text-brand-100 opacity-60 pointer-events-none" />
 
-      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 py-4 md:py-6 grid gap-5 lg:gap-8 lg:grid-cols-[1.05fr_1fr] items-center">
-        {/* LEFT */}
-        <div>
+      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 py-4 md:py-6 grid gap-5 lg:gap-x-8 lg:gap-y-0 lg:grid-cols-[1.05fr_1fr] items-center">
+        {/* LEFT TOP — headline */}
+        <div className="order-1 lg:col-start-1 lg:row-start-1 lg:self-end">
           <div className="inline-flex items-center gap-2 rounded-full bg-brand-50/80 px-3 py-1.5 text-xs md:text-sm font-medium text-brand-800 ring-1 ring-brand-100 animate-fade-up">
             <SparkleIcon className="h-3.5 w-3.5 text-brand-600" />
             <span>Trusted by 5000+ customers in {SITE.city}</span>
@@ -60,8 +60,11 @@ export default function HomeHero() {
             Free pickup, transparent weighing &amp; instant payment.<br className="hidden sm:block" />
             From a single sofa to a complete office shut-down, we handle it all.
           </p>
+        </div>
 
-          <div className="mt-4 flex flex-col sm:flex-row gap-2.5 animate-fade-up animate-fade-up-3">
+        {/* LEFT BOTTOM — contact buttons + rating (appears AFTER cards on mobile) */}
+        <div className="order-3 lg:order-2 lg:col-start-1 lg:row-start-2 lg:self-start">
+          <div className="flex flex-col sm:flex-row gap-2.5 animate-fade-up animate-fade-up-3">
             <Link
               href="/pickup-request"
               className="flex items-center gap-2.5 rounded-xl bg-brand-600 px-4 py-2.5 text-white shadow-md shadow-brand-600/30 hover:bg-brand-700 transition"
@@ -126,16 +129,17 @@ export default function HomeHero() {
         </div>
 
         {/* RIGHT — 2x2 grid */}
-        <div className="relative">
-          <div className="grid grid-cols-2 gap-3 md:gap-4">
+        <div className="relative order-2 lg:order-3 lg:col-start-2 lg:row-start-1 lg:row-span-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 md:gap-3">
             <CategoryCard
-              href="/scrap-buyers-hyderabad"
+              href="/scrap"
               tone="from-brand-700 via-brand-800 to-brand-950"
               icon={<RecycleIcon />}
               title="Scrap"
               desc="All types of metal & electrical scrap"
               images={["/images/s1.jpg", "/images/s2.jpg", "/images/s3.jpg", "/images/s4.jpg", "/images/s5.jpg"]}
               idx={imgIdx}
+              priority
             />
             <div className="relative">
               <CategoryCard
@@ -147,7 +151,7 @@ export default function HomeHero() {
                 images={["/images/fun1.jpg", "/images/fun2.jpg", "/images/fun3.jpg", "/images/fun4.jpg", "/images/fun5.jpg"]}
                 idx={imgIdx}
               />
-              <BestPriceBadge className="pointer-events-none absolute -top-4 -right-4 z-20 h-20 w-20 lg:h-24 lg:w-24 rotate-[10deg] drop-shadow-xl" />
+              <BestPriceBadge className="pointer-events-none absolute -top-3 -right-3 z-20 h-14 w-14 lg:h-16 lg:w-16 rotate-[10deg] drop-shadow-xl" />
             </div>
             <CategoryCard
               href="/ac-buyers-hyderabad"
@@ -165,6 +169,24 @@ export default function HomeHero() {
               title="Generators"
               desc="All types of generators buying at best price"
               images={["/images/gen1.jpg", "/images/gen2.jpg", "/images/gen3.jpg", "/images/gen4.jpg", "/images/gen5.jpg"]}
+              idx={imgIdx}
+            />
+            <CategoryCard
+              href="/office-furniture-buyers-hyderabad"
+              tone="from-brand-600 via-brand-700 to-brand-900"
+              icon={<BuildingIcon />}
+              title="Office"
+              desc="Office furniture, workstations & shut-down lots"
+              images={["/images/of1.jpg", "/images/of2.jpg", "/images/of3.jpg", "/images/of4.jpg", "/images/of5.jpg"]}
+              idx={imgIdx}
+            />
+            <CategoryCard
+              href="/restaurant-furniture-buyers"
+              tone="from-accent-600 via-accent-700 to-accent-950"
+              icon={<UtensilsIcon />}
+              title="Restaurant"
+              desc="Restaurant & hotel furniture, kitchen equipment"
+              images={["/images/f1.jpg", "/images/f2.jpg", "/images/f3.jpg", "/images/f4.jpg", "/images/f5.jpg"]}
               idx={imgIdx}
             />
           </div>
@@ -205,7 +227,8 @@ function CategoryCard({
   title,
   desc,
   images,
-  idx
+  idx,
+  priority = false
 }: {
   href: string;
   tone: string;
@@ -214,43 +237,40 @@ function CategoryCard({
   desc: string;
   images: string[];
   idx: number;
+  priority?: boolean;
 }) {
-  const activeIdx = idx % images.length;
+  const activeSrc = images[idx % images.length];
 
   return (
     <Link
       href={href}
-      className={`group relative block overflow-hidden rounded-2xl bg-gradient-to-br ${tone} aspect-[4/3] min-h-[8rem] shadow-lg shadow-ink-900/10 transition hover:-translate-y-1 hover:shadow-xl`}
+      className={`group relative block overflow-hidden rounded-xl bg-gradient-to-br ${tone} aspect-square min-h-[6rem] shadow-md shadow-ink-900/10 transition hover:-translate-y-1 hover:shadow-lg`}
     >
       <span className="absolute inset-0 z-0">
-        {images.map((src, i) => (
-          <Image
-            key={src}
-            src={src}
-            alt={title}
-            fill
-            sizes="(max-width: 1024px) 50vw, 240px"
-            className={`object-cover transition-opacity duration-700 ease-in-out group-hover:scale-105 ${
-              i === activeIdx ? "opacity-65 group-hover:opacity-75" : "opacity-0"
-            }`}
-            priority={i === 0}
-          />
-        ))}
+        <Image
+          key={activeSrc}
+          src={activeSrc}
+          alt={title}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+          className="object-cover opacity-65 group-hover:opacity-75 group-hover:scale-105 transition duration-700 ease-in-out animate-fade-up"
+          priority={priority}
+        />
       </span>
       <span className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-      <span className="absolute top-0 inset-x-0 z-10 flex items-center gap-2.5 p-3">
-        <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-ink-900 shadow ring-1 ring-black/5">
+      <span className="absolute top-0 inset-x-0 z-10 flex items-center gap-1.5 p-2">
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-ink-900 shadow ring-1 ring-black/5">
           {icon}
         </span>
-        <span className="text-base md:text-lg font-extrabold text-white drop-shadow">{title}</span>
+        <span className="text-sm md:text-base font-extrabold text-white drop-shadow">{title}</span>
       </span>
 
-      <span className="absolute inset-x-0 bottom-0 z-10 p-3 flex items-end justify-between gap-2">
-        <span className="text-[11px] md:text-xs font-medium text-white/95 leading-snug max-w-[70%] drop-shadow">
+      <span className="absolute inset-x-0 bottom-0 z-10 p-2 flex items-end justify-between gap-1.5">
+        <span className="text-[10px] md:text-[11px] font-medium text-white/95 leading-snug max-w-[70%] drop-shadow">
           {desc}
         </span>
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white text-ink-900 shadow-md group-hover:bg-accent-400 transition">
+        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white text-ink-900 shadow group-hover:bg-accent-400 transition">
           <ArrowRightIcon />
         </span>
       </span>
@@ -371,9 +391,26 @@ function BoltIcon() {
   );
 }
 
+function BuildingIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="3" width="16" height="18" rx="1" />
+      <path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2" />
+    </svg>
+  );
+}
+
+function UtensilsIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 2v7c0 1.1.9 2 2 2v10M5 2v6M7 2v6M14 2c-1.5 0-3 .5-3 3v6c0 1.5 1.5 2 3 2v9" />
+    </svg>
+  );
+}
+
 function ArrowRightIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M5 12h14M13 5l7 7-7 7" />
     </svg>
   );

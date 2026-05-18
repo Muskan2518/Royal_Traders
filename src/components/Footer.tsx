@@ -80,7 +80,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-ink-800">
-        <div className="container py-5 text-xs text-ink-400 flex flex-wrap justify-between gap-2">
+        <div className="container py-5 text-xs text-ink-400 flex flex-wrap items-center justify-between gap-2">
           <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</span>
           <span>Built for buyers in {SITE.city}.</span>
         </div>
